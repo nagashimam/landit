@@ -1,0 +1,101 @@
+{
+  "openapi": "3.0.9",
+  "info": { "title": "Landitコーディング試験", "version": "1.0.0" },
+  "paths": {
+    "/api/v1/townPlanning/estateTransaction/bar": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "不動産取引価格の検索API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "不動産取引価格",
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "絞り込み条件が正しくない場合にこのエラーを返します",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorCode": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR_INVALID_TYPE",
+                        "ERROR_INVALID_PREFECTURE_CODE",
+                        "ERROR_INVALID_YEAR",
+                        "ERROR_MISSING_PARAMETER"
+                      ]
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "enum": [
+                        "typeは1(住宅地)もしくは2(商業地)を選んでください",
+                        "prefectureCodeは8:(茨城県)、9:(栃木県)、10:(群馬県)、11:(埼玉県)、12:(千葉県)、13:(東京都)、14:(神奈川県)のどれかから選んでください",
+                        "yearは2015、2016、2017、2018のどれかから選んでください",
+                        "type、prefectureCode、yearの全てを指定してください"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "サーバー側で何らかの問題が起きた場合に、このエラーを返します",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "prefectureCode",
+            "description": "都道府県コード。関東地方のみ指定可。8:(茨城県)、9:(栃木県)、10:(群馬県)、11:(埼玉県)、12:(千葉県)、13:(東京都)、14:(神奈川県)のいずれか",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["8", "9", "10", "11", "12", "13", "14"]
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "住宅地(1)か商業地(2)かの区分",
+            "schema": {
+              "type": "string",
+              "enum": ["1", "2"]
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "description": "指定可能な年度",
+            "schema": {
+              "type": "number",
+              "enum": [2015, 2016, 2017, 2018]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "servers": [{ "url": "http://localhost:3000" }]
+}
