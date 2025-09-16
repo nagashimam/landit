@@ -1,0 +1,1 @@
+export const PATH_TO_RESOURCE = 'PATH_TO_RESOURCE';
